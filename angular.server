@@ -1,0 +1,31 @@
+server {
+  listen 80;
+  listen [::]:80;
+  server_name ec2-35-160-185-203.us-west-2.compute.amazonaws.com;
+  
+  
+  location / {
+                add_header  X-Robots-Tag "noindex, nofollow, nosnippet, noarchive";
+                proxy_pass http://localhost:3000;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_cache_bypass $http_upgrade;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                
+                if ($request_method = 'POST') {
+                   add_header 'Access-Control-Allow-Origin' '*';
+                   add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+                   add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range';
+                   add_header 'Access-Control-Expose-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range';
+                }
+                if ($request_method = 'GET') {
+                  add_header 'Access-Control-Allow-Origin' '*';
+                  add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+                  add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range';
+                  add_header 'Access-Control-Expose-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Content-Range,Range';
+               }
+             }
+ }
